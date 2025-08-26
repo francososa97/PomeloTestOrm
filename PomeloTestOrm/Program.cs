@@ -1,7 +1,17 @@
+
+using PomeloTestOrm.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddControllers();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+    ));
 
 var app = builder.Build();
 
@@ -20,6 +30,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
